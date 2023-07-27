@@ -21,7 +21,7 @@ public class TokenService {
         if (jwtUtil.validToken(refreshToken)) {
             Long userId = refreshTokenRepository.findByRefreshToken(refreshToken)
                     .orElseThrow(() -> new IllegalArgumentException("Unexpected token"))
-                    .getId();
+                    .getUserId();
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
 

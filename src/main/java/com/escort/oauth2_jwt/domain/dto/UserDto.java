@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDateTime;
@@ -15,12 +16,12 @@ import java.util.Map;
 
 @NoArgsConstructor
 @Getter
-public class UserDto implements OAuth2User {
+public class UserDto implements UserDetails, OAuth2User {
 
     private Long id;
     private String email;
     private String password;
-    private String name;
+    private String username;
     private Role role;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -28,11 +29,11 @@ public class UserDto implements OAuth2User {
     private String modifiedBy;
     private Map<String, Object> attributes;
 
-    public UserDto(Long id, String email, String password, String name, Role role, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
+    public UserDto(Long id, String email, String password, String username, Role role, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.name = name;
+        this.username = username;
         this.role = role;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
@@ -45,7 +46,7 @@ public class UserDto implements OAuth2User {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getName(),
+                user.getUsername(),
                 user.getRole(),
                 user.getCreatedDate(),
                 user.getModifiedDate(),
@@ -69,8 +70,28 @@ public class UserDto implements OAuth2User {
     }
 
     @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
     public String getName() {
-        return this.name;
+        return this.username;
     }
 
 }

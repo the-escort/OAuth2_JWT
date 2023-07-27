@@ -28,7 +28,7 @@ public class User {
 
     private String password;
 
-    private String name;
+    private String username;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -50,15 +50,15 @@ public class User {
     private String modifiedBy;
 
     @Builder
-    public User(String email, String password, String name, Role role) {
+    public User(String email, String password, String username, Role role) {
         this.email = email;
         this.password = password;
-        this.name = name;
+        this.username = username;
         this.role = role;
     }
 
-    public User setName(String name) {
-        this.name = name;
+    public User setUsername(String username) {
+        this.username = username;
         return this;
     }
 
