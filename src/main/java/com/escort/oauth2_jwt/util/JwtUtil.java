@@ -26,8 +26,8 @@ public class JwtUtil {
                 .setIssuer(jwtProperties.getIssuer())
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expiredAt.toMillis()))
-                .setSubject(user.getEmail())
-                .claim("id", user.getId())
+                .setSubject("Json Web Token")
+                .claim("email", user.getEmail())
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
     }
@@ -43,9 +43,9 @@ public class JwtUtil {
         }
     }
 
-    public Long getUserId(String token) {
+    public String getEmail(String token) {
         Claims claims = getClaims(token);
-        return claims.get("id", Long.class);
+        return claims.get("email", String.class);
     }
 
     private Claims getClaims(String token) {
