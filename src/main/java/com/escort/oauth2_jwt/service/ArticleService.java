@@ -16,20 +16,19 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public Article save(ArticleRequest articleRequest) {
+    public Article save(ArticleRequest articleRequest, String username) {
         Article article = Article.builder()
                 .title(articleRequest.getTitle())
                 .content(articleRequest.getContent())
+                .author(username)
                 .build();
         return articleRepository.save(article);
     }
 
-    @Transactional(readOnly = true)
     public List<Article> findAll() {
         return articleRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     public Article findById(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected article -> " + id));

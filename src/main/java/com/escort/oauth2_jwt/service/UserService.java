@@ -1,7 +1,6 @@
 package com.escort.oauth2_jwt.service;
 
 import com.escort.oauth2_jwt.constant.Role;
-import com.escort.oauth2_jwt.domain.dto.UserDto;
 import com.escort.oauth2_jwt.domain.entity.User;
 import com.escort.oauth2_jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +33,8 @@ public class UserService extends DefaultOAuth2UserService {
                         .role(Role.USER)
                         .build());
         userRepository.save(user);
-        UserDto userDto = UserDto.fromEntity(user);
-        userDto.setAttributes(attributes);
 
-        return userDto;
+        return oAuth2User;
     }
 
 }

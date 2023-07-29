@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,8 +21,8 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/article")
-    public ResponseEntity<ArticleResponse> addArticle(@RequestBody ArticleRequest articleRequest) {
-        Article article = articleService.save(articleRequest);
+    public ResponseEntity<ArticleResponse> addArticle(@RequestBody ArticleRequest articleRequest, Principal principal) {
+        Article article = articleService.save(articleRequest, principal.getName());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ArticleResponse.fromEntity(article));

@@ -27,6 +27,8 @@ public class Article {
 
     private String content;
 
+    private String author;
+
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     private LocalDateTime createdDate;
@@ -44,9 +46,10 @@ public class Article {
     private String modifiedBy;
 
     @Builder
-    public Article(String title, String content) {
+    public Article(String title, String content, String author) {
         this.title = title;
         this.content = content;
+        this.author = author;
     }
 
     public void update(String title, String content) {

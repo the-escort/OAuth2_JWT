@@ -7,16 +7,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor
 @Getter
-public class UserDto implements UserDetails, OAuth2User {
+public class UserDto implements UserDetails {
 
     private Long id;
     private String email;
@@ -27,7 +25,6 @@ public class UserDto implements UserDetails, OAuth2User {
     private LocalDateTime modifiedDate;
     private String createdBy;
     private String modifiedBy;
-    private Map<String, Object> attributes;
 
     public UserDto(Long id, String email, String password, String username, Role role, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
         this.id = id;
@@ -55,18 +52,19 @@ public class UserDto implements UserDetails, OAuth2User {
         );
     }
 
-    public void setAttributes(Map<String, Object> attributes) {
-        this.attributes = attributes;
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return this.attributes;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.toString()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
@@ -88,10 +86,4 @@ public class UserDto implements UserDetails, OAuth2User {
     public boolean isEnabled() {
         return true;
     }
-
-    @Override
-    public String getName() {
-        return this.username;
-    }
-
 }

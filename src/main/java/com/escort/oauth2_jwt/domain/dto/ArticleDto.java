@@ -13,6 +13,7 @@ public class ArticleDto {
     private Long id;
     private String title;
     private String content;
+    private String author;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String createdBy;
@@ -23,6 +24,7 @@ public class ArticleDto {
                 article.getId(),
                 article.getTitle(),
                 article.getContent(),
+                article.getAuthor(),
                 article.getCreatedDate(),
                 article.getModifiedDate(),
                 article.getCreatedBy(),
