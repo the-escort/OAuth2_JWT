@@ -1,7 +1,8 @@
 package com.escort.oauth2_jwt.config;
 
 import com.escort.oauth2_jwt.domain.dto.UserDto;
-import com.escort.oauth2_jwt.service.UserService;
+import com.escort.oauth2_jwt.domain.entity.User;
+import com.escort.oauth2_jwt.repository.UserRepository;
 import com.escort.oauth2_jwt.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,21 +20,20 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String token = getAccessToken(authorizationHeader);
 
-        if (token != null) {
-            UserDto userDto = (UserDto) userService.loadUserByUsername(jwtUtil.getEmail(token));
-
-            if (jwtUtil.validToken(token)) {
-                UsernamePasswordAuthenticationToken authentication =
+        if (jwtUtil.validToken(token)) {
+            User user = userRepository.findByEmail(jwtUtil.getEmail(token))
+                    .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+            UserDto userDto = UserDto.fromEntity(user);
+            UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDto, token, userDto.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);

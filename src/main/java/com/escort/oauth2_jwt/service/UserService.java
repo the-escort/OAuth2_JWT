@@ -5,9 +5,6 @@ import com.escort.oauth2_jwt.domain.dto.UserDto;
 import com.escort.oauth2_jwt.domain.entity.User;
 import com.escort.oauth2_jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -18,7 +15,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class UserService extends DefaultOAuth2UserService implements UserDetailsService {
+public class UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
@@ -41,14 +38,6 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
         userDto.setAttributes(attributes);
 
         return userDto;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
-
-        return UserDto.fromEntity(user);
     }
 
 }

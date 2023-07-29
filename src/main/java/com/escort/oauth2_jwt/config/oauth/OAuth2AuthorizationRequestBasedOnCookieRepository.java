@@ -35,7 +35,7 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
         return this.loadAuthorizationRequest(request);
     }
 
-    private void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
+    public void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
         cookieUtil.deleteCookie(request, response, "oauth2_auth_request");
     }
 

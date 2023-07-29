@@ -22,7 +22,7 @@ import java.time.Duration;
 
 @RequiredArgsConstructor
 @Component
-public class OAUth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
@@ -65,11 +65,11 @@ public class OAUth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
-        oAuth2AuthorizationRequestBasedOnCookieRepository.removeAuthorizationRequest(request, response);
+        oAuth2AuthorizationRequestBasedOnCookieRepository.removeAuthorizationRequestCookies(request, response);
     }
 
     private String getTargetUrl(String token) {
-        return UriComponentsBuilder.fromUriString("/article")
+        return UriComponentsBuilder.fromUriString("/articles")
                 .queryParam("token", token)
                 .build()
                 .toUriString();
